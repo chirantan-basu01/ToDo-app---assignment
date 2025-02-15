@@ -6,8 +6,8 @@ import 'package:lottie/lottie.dart';
 
 import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
-import '../database/task.dart';
 import '../widgets/add_task_dialog.dart';
+import '../widgets/task_progress_chart.dart';
 import '../widgets/task_tile.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,6 +33,8 @@ class HomeScreen extends StatelessWidget {
           if (state is TodoInitial) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TodoLoaded) {
+            int completedTasks = state.tasks.where((task) => task.isCompleted).length;
+            int remainingTasks = state.tasks.length - completedTasks;
             if (state.tasks.isEmpty) {
               return Center(
                 child: Column(
@@ -46,30 +48,48 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             }
-            return AnimationLimiter(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(10),
-                itemCount: state.tasks.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 500),
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: TaskTile(
-                          task: state.tasks[index],
-                          onDelete: () => context
-                              .read<TodoBloc>()
-                              .add(RemoveTaskEvent(state.tasks[index])),
-                          onEdit: () => context.read<TodoBloc>().add(
-                              EditTaskEvent(state.tasks[index].copyWith())),
-                        ),
-                      ),
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                TaskProgressChart(
+                    completedTasks: completedTasks,
+                    remainingTasks: remainingTasks),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: AnimationLimiter(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(10),
+                      itemCount: state.tasks.length,
+                      itemBuilder: (context, index) {
+                        return AnimationConfiguration.staggeredList(
+                          position: index,
+                          duration: const Duration(milliseconds: 500),
+                          child: SlideAnimation(
+                            verticalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: TaskTile(
+                                task: state.tasks[index],
+                                onDelete: () => context
+                                    .read<TodoBloc>()
+                                    .add(RemoveTaskEvent(state.tasks[index])),
+                                onEdit: () => context.read<TodoBloc>().add(
+                                    EditTaskEvent(
+                                        state.tasks[index].copyWith())),
+                                onToggleComplete: (bool? isChecked) => context
+                                    .read<TodoBloc>()
+                                    .add(
+                                      EditTaskEvent(state.tasks[index].copyWith(
+                                          isCompleted: isChecked ?? false)),
+                                    ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             );
           } else if (state is TodoError) {
             Fluttertoast.showToast(

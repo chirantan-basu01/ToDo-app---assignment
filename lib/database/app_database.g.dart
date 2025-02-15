@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Task` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Task` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -118,20 +118,29 @@ class _$TaskDao extends TaskDao {
         _taskInsertionAdapter = InsertionAdapter(
             database,
             'Task',
-            (Task item) =>
-                <String, Object?>{'id': item.id, 'title': item.title}),
+            (Task item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'isCompleted': item.isCompleted ? 1 : 0
+                }),
         _taskUpdateAdapter = UpdateAdapter(
             database,
             'Task',
             ['id'],
-            (Task item) =>
-                <String, Object?>{'id': item.id, 'title': item.title}),
+            (Task item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'isCompleted': item.isCompleted ? 1 : 0
+                }),
         _taskDeletionAdapter = DeletionAdapter(
             database,
             'Task',
             ['id'],
-            (Task item) =>
-                <String, Object?>{'id': item.id, 'title': item.title});
+            (Task item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'isCompleted': item.isCompleted ? 1 : 0
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -148,8 +157,10 @@ class _$TaskDao extends TaskDao {
   @override
   Future<List<Task>> getAllTasks() async {
     return _queryAdapter.queryList('SELECT * FROM Task',
-        mapper: (Map<String, Object?> row) =>
-            Task(id: row['id'] as int?, title: row['title'] as String));
+        mapper: (Map<String, Object?> row) => Task(
+            id: row['id'] as int?,
+            title: row['title'] as String,
+            isCompleted: (row['isCompleted'] as int) != 0));
   }
 
   @override

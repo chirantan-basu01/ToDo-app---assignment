@@ -7,7 +7,8 @@ class TaskRepository {
   TaskRepository(this.taskDao);
 
   Future<List<Task>> getAllTasks() => taskDao.getAllTasks();
-  Future<void> addTask(String title) => taskDao.insertTask(Task(title: title));
+  Future<void> addTask(String title) => taskDao.insertTask(Task(title: title, isCompleted: false));
   Future<void> removeTask(Task task) => taskDao.deleteTask(task);
   Future<void> updateTask(Task task) => taskDao.updateTask(task);
+
 }

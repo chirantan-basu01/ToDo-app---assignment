@@ -14,6 +14,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<AddTaskEvent>(_onAddTask);
     on<RemoveTaskEvent>(_onRemoveTask);
     on<EditTaskEvent>(_onEditTask);
+    on<ToggleTaskCompletionEvent>(_toggleTaskCompletion);
   }
 
   Future<void> _onLoadTasks(
@@ -54,6 +55,18 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       emit(TodoLoaded(updatedTasks));
     } catch (e) {
       emit(TodoError("Failed to update task."));
+    }
+  }
+
+  Future<void> _toggleTaskCompletion(
+      ToggleTaskCompletionEvent event, Emitter<TodoState> emit) async {
+    try {
+      Task updatedTask = event.taskCompleted
+          .copyWith(isCompleted: !event.taskCompleted.isCompleted);
+      await taskRepository.updateTask(updatedTask);
+      add(LoadTasksEvent());
+    } catch (e) {
+      emit(TodoError('Failed to update task: ${e.toString()}'));
     }
   }
 }

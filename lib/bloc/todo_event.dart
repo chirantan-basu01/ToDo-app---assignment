@@ -18,3 +18,8 @@ class EditTaskEvent extends TodoEvent {
   final Task updatedTask;
   EditTaskEvent(this.updatedTask);
 }
+
+class ToggleTaskCompletionEvent extends TodoEvent {
+  final Task taskCompleted;
+  ToggleTaskCompletionEvent(this.taskCompleted);
+}

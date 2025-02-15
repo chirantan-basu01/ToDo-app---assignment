@@ -43,6 +43,7 @@ dependencies:
   animations: ^2.0.11
   floor: ^1.4.2
   fluttertoast: ^8.2.12
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

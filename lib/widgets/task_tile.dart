@@ -9,12 +9,14 @@ class TaskTile extends StatelessWidget {
   final Task task;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
+  final ValueChanged<bool?> onToggleComplete;
 
   const TaskTile({
     super.key,
     required this.task,
     required this.onDelete,
     required this.onEdit,
+    required this.onToggleComplete,
   });
 
   @override
@@ -53,11 +55,18 @@ class TaskTile extends StatelessWidget {
         elevation: 3,
         color: const Color(0xFF2A2D3E),
         child: ListTile(
+          leading: Checkbox(
+            value: task.isCompleted,
+            onChanged: onToggleComplete,
+            activeColor: Colors.green,
+          ),
           title: Text(task.title,
               style: GoogleFonts.montserrat(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white)),
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: task.isCompleted ? Colors.grey : Colors.white,
+                decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+              )),
         ),
       ),
     );

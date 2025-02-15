@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/todo_bloc.dart';
+import 'bloc/todo_event.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => TodoBloc(TaskRepository())),
+        BlocProvider(create: (context) => TodoBloc(TaskRepository())..add(LoadTasksEvent())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

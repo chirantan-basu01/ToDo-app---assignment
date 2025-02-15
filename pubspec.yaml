@@ -42,6 +42,7 @@ dependencies:
   flutter_slidable: ^4.0.0
   animations: ^2.0.11
   floor: ^1.4.2
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:

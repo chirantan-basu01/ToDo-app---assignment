@@ -18,26 +18,42 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   Future<void> _onLoadTasks(
       LoadTasksEvent event, Emitter<TodoState> emit) async {
-    final tasks = await taskRepository.getAllTasks();
-    emit(TodoLoaded(tasks));
+    try {
+      final tasks = await taskRepository.getAllTasks();
+      emit(TodoLoaded(tasks));
+    } catch (e) {
+      emit(TodoError("Failed to load tasks."));
+    }
   }
 
   Future<void> _onAddTask(AddTaskEvent event, Emitter<TodoState> emit) async {
-    await taskRepository.addTask(event.addTask);
-    add(LoadTasksEvent());
+    try {
+      await taskRepository.addTask(event.addTask);
+      add(LoadTasksEvent());
+    } catch (e) {
+      emit(TodoError("Failed to add tasks."));
+    }
   }
 
   Future<void> _onRemoveTask(
       RemoveTaskEvent event, Emitter<TodoState> emit) async {
-    await taskRepository.removeTask(event.removeTask);
-    add(LoadTasksEvent());
+    try {
+      await taskRepository.removeTask(event.removeTask);
+      add(LoadTasksEvent());
+    } catch (e) {
+      emit(TodoError("Failed to remove tasks."));
+    }
   }
 
   Future<void> _onEditTask(EditTaskEvent event, Emitter<TodoState> emit) async {
-    await taskRepository.updateTask(event.updatedTask);
-    final updatedTasks = (state as TodoLoaded).tasks.map((task) {
-      return task.id == event.updatedTask.id ? event.updatedTask : task;
-    }).toList();
-    emit(TodoLoaded(updatedTasks));
+    try {
+      await taskRepository.updateTask(event.updatedTask);
+      final updatedTasks = (state as TodoLoaded).tasks.map((task) {
+        return task.id == event.updatedTask.id ? event.updatedTask : task;
+      }).toList();
+      emit(TodoLoaded(updatedTasks));
+    } catch (e) {
+      emit(TodoError("Failed to update task."));
+    }
   }
 }

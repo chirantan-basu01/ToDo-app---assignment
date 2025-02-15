@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 
 import '../bloc/todo_bloc.dart';
@@ -58,18 +59,25 @@ class HomeScreen extends StatelessWidget {
                       child: FadeInAnimation(
                         child: TaskTile(
                           task: state.tasks[index],
-                            onDelete: () => context
-                                .read<TodoBloc>()
-                                .add(RemoveTaskEvent(state.tasks[index])),
-                          onEdit: () => context
+                          onDelete: () => context
                               .read<TodoBloc>()
-                              .add(EditTaskEvent(state.tasks[index].copyWith())),
+                              .add(RemoveTaskEvent(state.tasks[index])),
+                          onEdit: () => context.read<TodoBloc>().add(
+                              EditTaskEvent(state.tasks[index].copyWith())),
                         ),
                       ),
                     ),
                   );
                 },
               ),
+            );
+          } else if (state is TodoError) {
+            Fluttertoast.showToast(
+              msg: state.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.white38,
+              textColor: Colors.black45,
             );
           }
           return const Center(

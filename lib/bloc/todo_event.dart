@@ -1,5 +1,13 @@
-part of 'todo_bloc.dart';
+abstract class TodoEvent {}
 
-sealed class TodoEvent extends Equatable {
-  const TodoEvent();
+class LoadTasksEvent extends TodoEvent {}
+
+class AddTaskEvent extends TodoEvent {
+  final String task;
+  AddTaskEvent(this.task);
+}
+
+class RemoveTaskEvent extends TodoEvent {
+  final int index;
+  RemoveTaskEvent(this.index);
 }

@@ -1,10 +1,10 @@
 part of 'todo_bloc.dart';
 
-sealed class TodoState extends Equatable {
-  const TodoState();
-}
+abstract class TodoState {}
 
-final class TodoInitial extends TodoState {
-  @override
-  List<Object> get props => [];
+class TodoInitial extends TodoState {}
+
+class TodoLoaded extends TodoState {
+  final List<String> tasks;
+  TodoLoaded(this.tasks);
 }

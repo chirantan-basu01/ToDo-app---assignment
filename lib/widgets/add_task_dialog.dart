@@ -9,14 +9,16 @@ void showAddTaskDialog(BuildContext context) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Add Task'),
+        backgroundColor: const Color(0xFF2A2D3E),
+        title: const Text('Add Task', style: TextStyle(color: Colors.white)),
         content: TextField(
             controller: taskController,
             decoration: const InputDecoration(hintText: 'Enter task')),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white))),
           TextButton(
             onPressed: () {
               if (taskController.text.isNotEmpty) {
@@ -24,7 +26,7 @@ void showAddTaskDialog(BuildContext context) {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Add'),
+            child: const Text('Add', style: TextStyle(color: Colors.white)),
           ),
         ],
       );

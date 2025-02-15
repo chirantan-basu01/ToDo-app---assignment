@@ -24,7 +24,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'ToDo App',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: const Color(0xFF1E1E2C),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF2A2D3E),
+            elevation: 5,
+            titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            centerTitle: true,
+          ),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            bodyMedium: TextStyle(fontSize: 16, color: Colors.white70),
+          ),
         ),
         home: const HomeScreen(),
       ),

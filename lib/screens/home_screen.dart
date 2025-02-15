@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 
 import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
+import '../database/task.dart';
 import '../widgets/add_task_dialog.dart';
 import '../widgets/task_tile.dart';
 
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Tasks'),
+        title: const Text('Slay Your Tasks ⚡'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -26,7 +27,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           if (state is TodoInitial) {
@@ -58,9 +58,12 @@ class HomeScreen extends StatelessWidget {
                       child: FadeInAnimation(
                         child: TaskTile(
                           task: state.tasks[index],
-                          onDelete: () => context
+                            onDelete: () => context
+                                .read<TodoBloc>()
+                                .add(RemoveTaskEvent(state.tasks[index])),
+                          onEdit: () => context
                               .read<TodoBloc>()
-                              .add(RemoveTaskEvent(state.tasks[index])),
+                              .add(EditTaskEvent(state.tasks[index].copyWith())),
                         ),
                       ),
                     ),
@@ -74,7 +77,6 @@ class HomeScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white)));
         },
       ),
-
       floatingActionButton: GestureDetector(
         onTap: () => showAddTaskDialog(context),
         child: Container(

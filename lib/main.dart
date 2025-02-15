@@ -1,6 +1,7 @@
 import 'package:assignment_app/repositories/task_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/todo_bloc.dart';
 import 'bloc/todo_event.dart';
@@ -33,15 +34,26 @@ class MyApp extends StatelessWidget {
         title: 'ToDo App',
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFF1E1E2C),
-          appBarTheme: const AppBarTheme(
+          appBarTheme: AppBarTheme(
             backgroundColor: Color(0xFF2A2D3E),
             elevation: 5,
-            titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            titleTextStyle: GoogleFonts.montserrat(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
             centerTitle: true,
           ),
-          textTheme: const TextTheme(
-            bodyLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            bodyMedium: TextStyle(fontSize: 16, color: Colors.white70),
+          textTheme: TextTheme(
+            bodyLarge: GoogleFonts.montserrat(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            bodyMedium: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: Colors.white70,
+            ),
           ),
         ),
         home: const HomeScreen(),

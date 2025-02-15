@@ -120,6 +120,12 @@ class _$TaskDao extends TaskDao {
             'Task',
             (Task item) =>
                 <String, Object?>{'id': item.id, 'title': item.title}),
+        _taskUpdateAdapter = UpdateAdapter(
+            database,
+            'Task',
+            ['id'],
+            (Task item) =>
+                <String, Object?>{'id': item.id, 'title': item.title}),
         _taskDeletionAdapter = DeletionAdapter(
             database,
             'Task',
@@ -135,6 +141,8 @@ class _$TaskDao extends TaskDao {
 
   final InsertionAdapter<Task> _taskInsertionAdapter;
 
+  final UpdateAdapter<Task> _taskUpdateAdapter;
+
   final DeletionAdapter<Task> _taskDeletionAdapter;
 
   @override
@@ -147,6 +155,11 @@ class _$TaskDao extends TaskDao {
   @override
   Future<void> insertTask(Task task) async {
     await _taskInsertionAdapter.insert(task, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateTask(Task task) async {
+    await _taskUpdateAdapter.update(task, OnConflictStrategy.abort);
   }
 
   @override

@@ -5,11 +5,16 @@ abstract class TodoEvent {}
 class LoadTasksEvent extends TodoEvent {}
 
 class AddTaskEvent extends TodoEvent {
-  final String task;
-  AddTaskEvent(this.task);
+  final String addTask;
+  AddTaskEvent(this.addTask);
 }
 
 class RemoveTaskEvent extends TodoEvent {
-  final Task task;
-  RemoveTaskEvent(this.task);
+  final Task removeTask;
+  RemoveTaskEvent(this.removeTask);
+}
+
+class EditTaskEvent extends TodoEvent {
+  final Task updatedTask;
+  EditTaskEvent(this.updatedTask);
 }

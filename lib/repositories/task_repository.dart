@@ -1,17 +1,12 @@
+import '../database/task_dao.dart';
+import '../database/task.dart';
+
 class TaskRepository {
-  final List<String> tasks = [];
+  final TaskDao taskDao;
 
-  List<String> getTasks() {
-    return List.from(tasks);
-  }
+  TaskRepository(this.taskDao);
 
-  void addTask(String task) {
-    tasks.add(task);
-  }
-
-  void removeTask(int index) {
-    if (index >= 0 && index < tasks.length) {
-      tasks.removeAt(index);
-    }
-  }
+  Future<List<Task>> getAllTasks() => taskDao.getAllTasks();
+  Future<void> addTask(String title) => taskDao.insertTask(Task(title: title));
+  Future<void> removeTask(Task task) => taskDao.deleteTask(task);
 }

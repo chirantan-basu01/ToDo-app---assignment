@@ -4,21 +4,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/todo_bloc.dart';
 import 'bloc/todo_event.dart';
+import 'database/app_database.dart';
 import 'screens/home_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  final taskRepository = TaskRepository(database.taskDao);
+
+  runApp(MyApp(taskRepository: taskRepository));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final TaskRepository taskRepository;
+
+
+  const MyApp({super.key, required this.taskRepository});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => TodoBloc(TaskRepository())..add(LoadTasksEvent())),
+        BlocProvider(create: (context) => TodoBloc(taskRepository)..add(LoadTasksEvent())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

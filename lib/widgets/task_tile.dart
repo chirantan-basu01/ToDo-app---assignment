@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../database/task.dart';
+
 class TaskTile extends StatelessWidget {
-  final String task;
+  final Task task;
   final VoidCallback onDelete;
 
   const TaskTile({super.key, required this.task, required this.onDelete});
@@ -29,7 +31,7 @@ class TaskTile extends StatelessWidget {
         elevation: 3,
         color: const Color(0xFF2A2D3E),
         child: ListTile(
-          title: Text(task,
+          title: Text(task.title,
               style: GoogleFonts.lato(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,

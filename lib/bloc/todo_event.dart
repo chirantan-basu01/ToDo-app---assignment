@@ -1,3 +1,5 @@
+import '../database/task.dart';
+
 abstract class TodoEvent {}
 
 class LoadTasksEvent extends TodoEvent {}
@@ -8,6 +10,6 @@ class AddTaskEvent extends TodoEvent {
 }
 
 class RemoveTaskEvent extends TodoEvent {
-  final int index;
-  RemoveTaskEvent(this.index);
+  final Task task;
+  RemoveTaskEvent(this.task);
 }

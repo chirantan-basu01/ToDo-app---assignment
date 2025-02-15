@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                           task: state.tasks[index],
                           onDelete: () => context
                               .read<TodoBloc>()
-                              .add(RemoveTaskEvent(index)),
+                              .add(RemoveTaskEvent(state.tasks[index])),
                         ),
                       ),
                     ),
